@@ -52,8 +52,8 @@ html(lang="en")
       footer
         if config.owner
           p
-            b #{config.site} 
-            | brought to you by 
+            b #{config.site}
+            | brought to you by
             if config.ownerURL
               a(href="#{config.ownerURL}") #{config.owner}
             else
@@ -64,6 +64,7 @@ html(lang="en")
         p
           a(href="/javascript/about.html", data-jslicense="1", data-bypass) JavaScript license information
 
+    script(src="/shared/jade-runtime.js")
     if config.debugClient
       script(src="/javascript/libs/jquery-1.10.2.js")
       script(src="/javascript/libs/jquery.easydate-0.2.4.js")
@@ -79,6 +80,7 @@ html(lang="en")
       script(src="/javascript/libs/bootstrap-wysihtml5.js")
       script(src="/javascript/libs/select2.js")
       script(src="/javascript/libs/bootstrap-lightbox.js")
+      script(src="/template/templates.js")
       if config.sockjs
         script(src="/javascript/libs/sockjs.js")
     else
@@ -110,8 +112,7 @@ html(lang="en")
       script(src="/javascript/libs/jquery-spin.js")
       script(src="/javascript/libs/bootstrap-wysihtml5.js")
       script(src="/javascript/libs/bootstrap-lightbox.min.js")
-    script(src="/shared/jade-runtime.js")
-    script(src="/template/templates.js")
+      script(src="/template/templates.min.js")
     script(src="/javascript/pump.js")
     script(src="/javascript/pump/auth.js")
     script(src="/javascript/pump/model.js")
