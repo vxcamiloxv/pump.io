@@ -348,6 +348,40 @@
                 Pump.debug("Resetting items of " + str.url() + " to new array of length " + items.length);
                 str.items.reset(items);
             });
+
+            str.items.on("add", function(model) {
+                var object = model.get("object"),
+                    isMinor = str.url().indexOf("minor") !== -1,
+                    isComment;
+
+                if (!object) {
+                    return;
+                }
+
+                isComment = object.objectType == "comment";
+
+                if (isComment || isMinor) {
+                    var major = Pump.getStreams().major,
+                        post = major.items.findWhere({
+                            object: {id: isComment ? object.inReplyTo.id : object.id}
+                        });
+
+                    if (!post) {
+                        return;
+                    } else if (isComment) {
+                        var replies = post.object.replies;
+                        object.author = model.get("actor");
+                        replies.items.add(object);
+                        post.object.set({replies: replies.toJSON()});
+                    } else {
+                        post.object.set({
+                            likes: object.likes,
+                            shares: object.shares
+                        });
+                    }
+                }
+
+            });
         },
         url: function() {
             var str = this;

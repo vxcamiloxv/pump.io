@@ -1518,6 +1518,21 @@
         events: {
             "click .show-all-replies": "showAllReplies"
         },
+        initialize: function(options) {
+            var view = this,
+                model = view.model;
+
+            model.items.on("add", function(reply) {
+                var repl = new Pump.ReplyView({model: reply});
+
+                repl.on("ready", function() {
+                    view.stopSpin();
+                    view.$el.append(repl.$el);
+                });
+
+                repl.render();
+            });
+        },
         showAllReplies: function() {
             var view = this,
                 replies = view.model,
@@ -1623,16 +1638,8 @@
 
                     object.author = Pump.principal;
 
-                    repl = new Pump.ReplyView({model: object});
-
-                    repl.on("ready", function() {
-
-                        view.stopSpin();
-
-                        view.$el.replaceWith(repl.$el);
-                    });
-
-                    repl.render();
+                    view.stopSpin();
+                    view.remove();
 
                     Pump.addMinorActivity(act);
                 }
