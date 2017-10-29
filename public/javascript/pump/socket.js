@@ -59,6 +59,7 @@
             act;
 
         if (target) {
+            delete activity.object.replies.items; // TODO: fix socket response
             act = Pump.Activity.unique(activity);
             target.items.unshift(act);
         }

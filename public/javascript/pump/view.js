@@ -427,7 +427,7 @@
 
             // When it's rendered, stick it where it goes
 
-            aview.on("ready", function() {
+            aview.on("ready", function onReady() {
 
                 var idx, $el = view.$(selector);
 
@@ -436,6 +436,7 @@
                 view.placeSub(aview, $el);
 
                 aview.$el.fadeIn("slow");
+                aview.off("ready", onReady);
             });
 
             aview.render();
@@ -1349,6 +1350,17 @@
             "click .comment": "openComment",
             "click .object-image": "openImage"
         },
+        initialize: function(options) {
+            var view = this;
+
+            if (_.has(view.model, "object")) {
+                view.listenTo(view.model.object, "change:likes change:shares change:replies", function(model) {
+                    Pump.debug("Re-rendering " + view.templateName + " #" + view.cid + " based on change to " + model.id);
+                    // When a change has happened, re-render
+                    view.render();
+                });
+            }
+        },
         setupSubs: function() {
             var view = this,
                 model = view.model,
@@ -1393,10 +1405,6 @@
                 });
 
             Pump.newMinorActivity(act, function(err, act) {
-                view.$(".favorite")
-                    .removeClass("favorite")
-                    .addClass("unfavorite")
-                    .html("Unlike <i class=\"fa fa-thumbs-down\"></i>");
                 Pump.addMinorActivity(act);
             });
         },
@@ -1411,10 +1419,6 @@
                 if (err) {
                     view.showError(err);
                 } else {
-                    view.$(".unfavorite")
-                        .removeClass("unfavorite")
-                        .addClass("favorite")
-                        .html("Like <i class=\"fa fa-thumbs-up\"></i>");
                     Pump.addMinorActivity(act);
                 }
             });
@@ -1433,10 +1437,6 @@
                     view.stopSpin();
                     view.showError(err);
                 } else {
-                    view.$(".share")
-                        .removeClass("share")
-                        .addClass("unshare")
-                        .html("Unshare <i class=\"fa fa-times\"></i>");
                     Pump.addMajorActivity(act);
                 }
             });
@@ -1455,10 +1455,6 @@
                     view.stopSpin();
                     view.showError(err);
                 } else {
-                    view.$(".unshare")
-                        .removeClass("unshare")
-                        .addClass("share")
-                        .html("Share <i class=\"fa fa-share\"></i>");
                     Pump.addMinorActivity(act);
                 }
             });
@@ -1522,16 +1518,22 @@
             var view = this,
                 model = view.model;
 
-            model.items.on("add", function(reply) {
-                var repl = new Pump.ReplyView({model: reply});
+            if (_.has(model, "items")) {
 
-                repl.on("ready", function() {
-                    view.stopSpin();
-                    view.$el.append(repl.$el);
+                view.listenTo(model.items, "add", function(reply, items) {
+                    var repl = new Pump.ReplyView({model: reply});
+
+                    view.startSpin();
+
+                    repl.on("ready", function() {
+                        view.stopSpin();
+                        view.$el.append(repl.$el);
+                    });
+
+                    repl.render();
+
                 });
-
-                repl.render();
-            });
+            }
         },
         showAllReplies: function() {
             var view = this,
@@ -1632,16 +1634,11 @@
                     view.stopSpin();
                     view.showError(err);
                 } else {
-                    var object = act.object,
-                        repl;
-                    // These get stripped for "posts"; re-add it
-
-                    object.author = Pump.principal;
-
                     view.stopSpin();
                     view.remove();
 
                     Pump.addMinorActivity(act);
+
                 }
             });
 

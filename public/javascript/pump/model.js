@@ -351,16 +351,20 @@
 
             str.items.on("add", function(model) {
                 var object = model.get("object"),
-                    isMinor = str.url().indexOf("minor") !== -1,
-                    isComment;
+                    verb = model.get("verb"),
+                    isPost = verb === "post" || verb == "create",
+                    isComment = false;
 
                 if (!object) {
                     return;
                 }
 
-                isComment = object.objectType == "comment";
+                if (object.objectType == "comment") {
+                    isComment = true;
+                    verb = "replies";
+                }
 
-                if (isComment || isMinor) {
+                if (isComment || !isPost) {
                     var major = Pump.getStreams().major,
                         post = major.items.findWhere({
                             object: {id: isComment ? object.inReplyTo.id : object.id}
@@ -368,19 +372,38 @@
 
                     if (!post) {
                         return;
-                    } else if (isComment) {
-                        var replies = post.object.replies;
-                        object.author = model.get("actor");
-                        replies.items.add(object);
-                        post.object.set({replies: replies.toJSON()});
-                    } else {
-                        post.object.set({
-                            likes: object.likes,
-                            shares: object.shares
+                    }
+
+                    object.author = model.get("actor");
+
+                    switch (verb) {
+                    case "replies":
+                        post.object.replies.items.add(object);
+                        post.object.replies.set({
+                            totalItems: post.object.replies.items.length
                         });
+                        break;
+                    case "like":
+                    case "favorite":
+                    case "unlike":
+                    case "unfavorite":
+                        if (!_.has(object.likes, "items")) {
+                            // TODO: sometimes API returns empty items when has likes
+                            object.likes.items = post.object.likes.items.toJSON();
+                            object.likes.items.push(object.author);
+                        }
+                        post.object.set({likes: object.likes});
+                        break;
+                    case "share":
+                    case "unshare":
+                        if (!_.has(object.shares, "items")) {
+                            object.shares.items = post.object.shares.items.toJSON();
+                            object.shares.items.push(object.author);
+                        }
+                        post.object.set({shares: object.shares});
+                        break;
                     }
                 }
-
             });
         },
         url: function() {
