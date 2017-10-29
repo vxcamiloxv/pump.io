@@ -353,27 +353,42 @@
                 var object = model.get("object"),
                     verb = model.get("verb"),
                     isPost = verb === "post" || verb == "create",
-                    isComment = false;
+                    isComment = false,
+                    id;
 
                 if (!object) {
                     return;
                 }
 
+                id = object.id;
                 if (object.objectType == "comment") {
                     isComment = true;
                     verb = "replies";
+                    id = object.inReplyTo.id;
                 }
 
                 if (isComment || !isPost) {
                     var major = Pump.getStreams().major,
+                        contModel = (Pump.body.content.userContent || Pump.body.content).model,
+                        post;
+
+                    if (major && major.items) {
                         post = major.items.findWhere({
-                            object: {id: isComment ? object.inReplyTo.id : object.id}
+                            object: {id: id}
                         });
+                    } else if (contModel && contModel.items) {
+                        post = contModel.items.findWhere({id: id});
+                    } else if (contModel && contModel.id == id) {
+                        post = contModel;
+                    }
 
                     if (!post) {
                         return;
                     }
 
+                    if (!_.has(post, "object")) {
+                        post =  {object: post};
+                    }
                     object.author = model.get("actor");
 
                     switch (verb) {

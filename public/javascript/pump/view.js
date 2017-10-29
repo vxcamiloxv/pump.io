@@ -1646,130 +1646,6 @@
         }
     });
 
-    Pump.MajorObjectView = Pump.TemplateView.extend({
-        templateName: "major-object",
-        parts: ["responses", "reply"],
-        events: {
-            "click .favorite": "favoriteObject",
-            "click .unfavorite": "unfavoriteObject",
-            "click .share": "shareObject",
-            "click .unshare": "unshareObject",
-            "click .comment": "openComment"
-        },
-        setupSubs: function() {
-            var view = this,
-                model = view.model,
-                $el = view.$(".replies");
-
-            if (view.replyStream) {
-                view.replyStream.setElement($el);
-                return;
-            }
-
-            view.replyStream = new Pump.ReplyStreamView({el: $el, model: model.replies});
-        },
-        favoriteObject: function() {
-            var view = this,
-                act = new Pump.Activity({
-                    verb: "favorite",
-                    object: view.model.toJSON()
-                });
-
-            view.startSpin();
-
-            Pump.newMinorActivity(act, function(err, act) {
-                if (err) {
-                    view.showError(err);
-                } else {
-                    view.$(".favorite")
-                        .removeClass("favorite")
-                        .addClass("unfavorite")
-                        .html("Unlike <i class=\"fa fa-thumbs-down\"></i>");
-                    Pump.addMinorActivity(act);
-                }
-                view.stopSpin();
-            });
-        },
-        unfavoriteObject: function() {
-            var view = this,
-                act = new Pump.Activity({
-                    verb: "unfavorite",
-                    object: view.model.toJSON()
-                });
-
-            view.startSpin();
-
-            Pump.newMinorActivity(act, function(err, act) {
-                if (err) {
-                    view.showError(err);
-                } else {
-                    view.$(".unfavorite")
-                        .removeClass("unfavorite")
-                        .addClass("favorite")
-                        .html("Like <i class=\"fa fa-thumbs-up\"></i>");
-                    Pump.addMinorActivity(act);
-                }
-                view.stopSpin();
-            });
-        },
-        shareObject: function() {
-            var view = this,
-                act = new Pump.Activity({
-                    verb: "share",
-                    object: view.model.toJSON()
-                });
-
-            view.startSpin();
-            Pump.newMajorActivity(act, function(err, act) {
-                if (err) {
-                    view.showError(err);
-                } else {
-                    view.$(".share")
-                        .removeClass("share")
-                        .addClass("unshare")
-                        .html("Unshare <i class=\"fa fa-times\"></i>");
-                    Pump.addMajorActivity(act);
-                }
-                view.stopSpin();
-            });
-        },
-        unshareObject: function() {
-            var view = this,
-                act = new Pump.Activity({
-                    verb: "unshare",
-                    object: view.model.toJSON()
-                });
-
-            view.startSpin();
-            Pump.newMinorActivity(act, function(err, act) {
-                if (err) {
-                    view.showError(err);
-                } else {
-                    view.$(".unshare")
-                        .removeClass("unshare")
-                        .addClass("share")
-                        .html("Share <i class=\"fa fa-share\"></i>");
-                    Pump.addMinorActivity(act);
-                }
-                view.stopSpin();
-            });
-        },
-        openComment: function() {
-            var view = this,
-                form;
-
-            if (view.$("form.post-comment").length > 0) {
-                view.$("form.post-comment textarea").focus();
-            } else {
-                form = new Pump.CommentForm({original: view.model});
-                form.on("ready", function() {
-                    view.$(".replies").append(form.$el);
-                });
-                form.render();
-            }
-        }
-    });
-
     Pump.ReplyView = Pump.TemplateView.extend({
         templateName: "reply",
         modelName: "reply",
@@ -2497,6 +2373,15 @@
             "click .unshare": "unshareObject",
             "click .comment": "openComment"
         },
+        initialize: function(options) {
+            var view = this;
+
+            view.listenTo(view.model, "change:likes change:shares change:replies", function(model) {
+                Pump.debug("Re-rendering " + view.templateName + " #" + view.cid + " based on change to " + model.id);
+                // When a change has happened, re-render
+                view.render();
+            });
+        },
         setupSubs: function() {
             var view = this,
                 model = view.model,
@@ -2522,10 +2407,6 @@
                 if (err) {
                     view.showError(err);
                 } else {
-                    view.$(".favorite")
-                        .removeClass("favorite")
-                        .addClass("unfavorite")
-                        .html("Unlike <i class=\"fa fa-thumbs-down\"></i>");
                     Pump.addMinorActivity(act);
                 }
                 view.stopSpin();
@@ -2544,10 +2425,6 @@
                 if (err) {
                     view.showError(err);
                 } else {
-                    view.$(".unfavorite")
-                        .removeClass("unfavorite")
-                        .addClass("favorite")
-                        .html("Like <i class=\"fa fa-thumbs-up\"></i>");
                     Pump.addMinorActivity(act);
                 }
                 view.stopSpin();
@@ -2566,10 +2443,6 @@
                 if (err) {
                     view.showError(err);
                 } else {
-                    view.$(".share")
-                        .removeClass("share")
-                        .addClass("unshare")
-                        .html("Unshare <i class=\"fa fa-times\"></i>");
                     Pump.addMajorActivity(act);
                 }
                 view.stopSpin();
@@ -2588,10 +2461,6 @@
                 if (err) {
                     view.showError(err);
                 } else {
-                    view.$(".unshare")
-                        .removeClass("unshare")
-                        .addClass("share")
-                        .html("Share <i class=\"fa fa-share\"></i>");
                     Pump.addMinorActivity(act);
                 }
                 view.stopSpin();
@@ -2611,6 +2480,12 @@
                 form.render();
             }
         }
+    });
+
+    Pump.MajorObjectView = Pump.ObjectContent.extend({
+        templateName: "major-object",
+        parts: ["responses", "reply"],
+        modelName: "obj"
     });
 
     Pump.ChooseContactModal = Pump.TemplateView.extend({
