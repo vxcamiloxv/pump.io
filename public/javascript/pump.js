@@ -84,6 +84,7 @@ if (!window.Pump) {
         }
 
         Pump.setupInfiniteScroll();
+        Pump.setupI18n();
 
         if (Pump.principalUser) {
             Pump.principalUser = Pump.User.unique(Pump.principalUser);

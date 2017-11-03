@@ -53,7 +53,7 @@ html(lang="en")
         if config.owner
           p
             b #{config.site} 
-            | brought to you by 
+            | #{t("brought to you by")} 
             if config.ownerURL
               a(href="#{config.ownerURL}") #{config.owner}
             else
@@ -94,6 +94,8 @@ html(lang="en")
         script(src="/javascript/libs/jquery.fineuploader.min.js")
         script(src="/javascript/libs/wysihtml5-0.3.0.min.js")
         script(src="/javascript/libs/select2.min.js")
+        script(src="/javascript/libs/i18next.min.js")
+        script(src="/javascript/libs/i18next-lang-detector.min.js")
         if config.sockjs
           script(src="/javascript/libs/sockjs.min.js")
       else
@@ -116,6 +118,7 @@ html(lang="en")
       script(src="/javascript/libs/bootstrap-lightbox.min.js")
     script(src="/shared/jade-runtime.js")
     script(src="/javascript/pump.js")
+    script(src="/javascript/pump/i18n.js")
     script(src="/javascript/pump/auth.js")
     script(src="/javascript/pump/model.js")
     script(src="/javascript/pump/router.js")
@@ -143,6 +146,8 @@ html(lang="en")
           sockjs: !{config.sockjs || false},
           nicknameBlacklist: !{JSON.stringify(config.nicknameBlacklist)}
       });
+
+      Pump.i18nResource = !{JSON.stringify(i18nResource)};
 
       Pump.initialData = !{data ? JSON.stringify(defang(data)) : 'null'};
 

@@ -308,6 +308,9 @@
 
             main.principalUser = (Pump.principalUser) ? Pump.principalUser.toJSON() : null;
             main.principal = (Pump.principal) ? Pump.principal.toJSON() : null;
+            main.t = function(key, opts) {
+                return Pump.i18n.t(key, opts);
+            };
 
             // XXX: set main.page.title
 
