@@ -95,7 +95,6 @@ html(lang="en")
         script(src="/javascript/libs/wysihtml5-0.3.0.min.js")
         script(src="/javascript/libs/select2.min.js")
         script(src="/javascript/libs/i18next.min.js")
-        script(src="/javascript/libs/i18next-lang-detector.min.js")
         if config.sockjs
           script(src="/javascript/libs/sockjs.min.js")
       else
@@ -147,7 +146,7 @@ html(lang="en")
           nicknameBlacklist: !{JSON.stringify(config.nicknameBlacklist)}
       });
 
-      Pump.i18nResource = !{JSON.stringify(i18nResource)};
+      Pump.i18nData = !{i18nData ? JSON.stringify(i18nData) : 'null'};
 
       Pump.initialData = !{data ? JSON.stringify(defang(data)) : 'null'};
 

@@ -80,6 +80,13 @@
                     });
                 }
             }
+
+            // When language change render all views
+            if (!_.isEmpty(Pump.i18n)) {
+                Pump.i18n.on("languageChanged", function(lng) {
+                    view.render();
+                });
+            }
         },
         setElement: function(element, delegate) {
             Backbone.View.prototype.setElement.apply(this, arguments);

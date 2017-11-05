@@ -41,7 +41,6 @@
     "gm": "^1.22.0",
     "helmet": "^3.3.0",
     "i18next": "^10.0.7",
-    "i18next-express-middleware": "^1.0.7",
     "i18next-node-fs-backend": "^1.0.0",
     "import-fresh": "^2.0.0",
     "jade": "^1.11.0",
