@@ -51,7 +51,9 @@ if (!window.Pump) {
             nonExplicitWhitelist: true,
             saveMissing: false
         }, function(err, t) {
-            Pump.debug(err);
+            if (err) {
+                Pump.debug(err);
+            }
         });
 
         // Set default resource for prevent initial request
@@ -60,7 +62,27 @@ if (!window.Pump) {
         }
 
         Pump.i18n.on("languageChanged", function(lng) {
-            Pump.setLanguage(lng);
+            var oldLng = _.get(Pump.i18nData, "language");
+
+            if (oldLng !== lng) {
+                // Custom event to update views if language really changes
+                Pump.i18n.emit("languageUpdate", lng, oldLng);
+                Pump.setLanguage(lng);
+
+                // Update principals views
+                if (Pump.body) {
+                    var reloadView = ["content", "nav", "footer"],
+                        i;
+
+                    for (i = 0; i < reloadView.length; i++) {
+                        var view = reloadView[i];
+
+                        if (Pump.body[view]) {
+                            Pump.body[view].render();
+                        }
+                    }
+                }
+            }
         });
     };
 

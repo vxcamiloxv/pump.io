@@ -81,9 +81,10 @@
                 }
             }
 
-            // When language change render all views
+            // When language was updated render all sub views
             if (!_.isEmpty(Pump.i18n)) {
-                Pump.i18n.on("languageChanged", function(lng) {
+                // Listen custom event
+                Pump.i18n.on("languageUpdate", function(lng, oldLng) {
                     view.render();
                 });
             }
