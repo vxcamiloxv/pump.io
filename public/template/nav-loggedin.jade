@@ -3,12 +3,12 @@
   a.brand(href="/")= config.site
 
   .btn-group
-    button.btn.btn-small.primary#post-note-button(type="button", title="Post a note")
-      span.hidden-phone Note 
+    button.btn.btn-small.primary#post-note-button(type="button", title="#{t(Post a note)}")
+      span.hidden-phone= t("Note") 
       i.fa.fa-pencil
     if config.canUpload
-      button.btn.btn-small.primary#post-picture-button(type="button", title="Post a picture")
-        span.hidden-phone Picture 
+      button.btn.btn-small.primary#post-picture-button(type="button", title="#{t(Post a picture)}")
+        span.hidden-phone= t("Picture") 
         i.fa.fa-picture-o
 
   ul.nav.pull-right
@@ -24,23 +24,23 @@
 
       ul.dropdown-menu(role="menu", aria-labelledby="profile-dropdown")
         li
-          a(tabindex="-1", href="/#{principalUser.nickname}") Activity
+          a(tabindex="-1", href="/#{principalUser.nickname}")= t("Activity")
         li
-          a(tabindex="-1", href="/#{principalUser.nickname}/favorites") Favorites
+          a(tabindex="-1", href="/#{principalUser.nickname}/favorites")= t("Favorites")
         li
-          a(tabindex="-1", href="/#{principalUser.nickname}/followers") Followers
+          a(tabindex="-1", href="/#{principalUser.nickname}/followers")= t("Followers")
         li
-          a(tabindex="-1", href="/#{principalUser.nickname}/following") Following
+          a(tabindex="-1", href="/#{principalUser.nickname}/following")= t("Following")
         li
-          a(tabindex="-1", href="/#{principalUser.nickname}/lists") Lists
+          a(tabindex="-1", href="/#{principalUser.nickname}/lists")= t("Lists")
         li.divider
         li
-          a(tabindex="-1", href="/main/settings") Settings
+          a(tabindex="-1", href="/main/settings")= t("Profile")
         li
-          a(tabindex="-1", href="/main/account") Account
+          a(tabindex="-1", href="/main/account")= t("Account")
         li.divider
         li
-          a#logout(tabindex="-1", href="#") Log out
+          a#logout(tabindex="-1", href="#")= t("Log out")
 
   .pull-right
     include ./messages.jade
