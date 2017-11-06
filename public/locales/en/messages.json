@@ -1,4 +1,16 @@
 {
   "Login to your account": "Login to your account",
-  "brought to you by": "brought to you by"
+  "brought to you by": "brought to you by",
+  "Register": "Register",
+  "Login": "Login",
+  "Log out": "Log out",
+  "Note": "Note",
+  "Picture": "Picture",
+  "Activity": "Activity",
+  "Favorites": "Favorites",
+  "Followers": "Followers",
+  "Following": "Following",
+  "Lists": "Lists",
+  "Profile": "Profile",
+  "Account": "Account"
 }
