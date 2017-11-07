@@ -19,7 +19,13 @@
             if !principalUser.language
               option(value="")= t("Select a language")
             each val, lang in i18nData.available
-              option(value=lang, selected=(principalUser.language === lang ? true : false))= val[0]
+              - var countryCode = ""
+              if val.countryCode
+                - countryCode = " (" + val.countryCode + ")"
+              if principalUser.language === lang
+                option(value=lang, selected=true)= val.native + countryCode
+              else
+                option(value=lang)= val.name + countryCode
           span.help-block= t("For email notifications and interfaz in your language")
 
       .clearfix
