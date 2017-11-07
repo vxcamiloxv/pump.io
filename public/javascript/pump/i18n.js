@@ -34,6 +34,13 @@ if (!window.Pump) {
 
     Pump.i18n = {};
 
+    /**
+     * @public
+     * Create and setup a i18n instance with XHR backend,
+     * the initial configuration data come from server side (Pump.i18nData),
+     * this also listen `languageChange` for update the views,
+     * and emits a custom event `languageUpdate` for dispatch to sub-views
+     */
     Pump.setupI18n = function() {
         var i18nData = Pump.i18nData || {},
             namespace = i18nData.namespace || "messages",
@@ -86,6 +93,12 @@ if (!window.Pump) {
         });
     };
 
+    /**
+     * @public
+     * Sets a cookie with the new language code and
+     * get the resource bundle for control the futures changes
+     * @param {string} lng - the new language to update
+     */
     Pump.setLanguage = function(lng) {
         if (_.isEmpty(Pump.i18nData) || _.isEmpty(Pump.i18n)) {
             Pump.debug(new Error("i18n not was initialized yet"));
@@ -100,6 +113,13 @@ if (!window.Pump) {
         document.cookie = "language=" + lng + "; expires=" + expirationDate + "; path=/";
     };
 
+    /**
+     * @public
+     * Language detector plugin for i18next,
+     * this get the language from server side data (Pump.i18nData)
+     * or from fallback language option.
+     * @return {obbject} detector plugin
+     */
     Pump.detectorI18n = function() {
         var detector = {
             type: "languageDetector",
@@ -121,6 +141,13 @@ if (!window.Pump) {
         return detector;
     };
 
+    /**
+     * @public
+     * Makes a XHR request if the language is available retrieve additional resources,
+     * if exist some error this will be retry unless it's 404,
+     * no missing keys will be created because the server takes care of that.
+     * @return {obbject} backend plugin
+     */
     Pump.backEndXhrI18n = function() {
         var backend = {
             type: "backend",
