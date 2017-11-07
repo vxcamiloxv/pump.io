@@ -1,4 +1,4 @@
-// pump.js
+// i18n.js
 //
 // i18n for the pump.io client UI
 //
@@ -47,7 +47,7 @@ if (!window.Pump) {
             defaultNS: namespace,
             fallbackNS: namespace,
             whitelist: i18nData.whitelist || [],
-            available: i18nData.available || [],
+            available: i18nData.available || {},
             nonExplicitWhitelist: true,
             saveMissing: false
         }, function(err, t) {
@@ -91,9 +91,13 @@ if (!window.Pump) {
             Pump.debug(new Error("i18n not was initialized yet"));
             return;
         }
+        var expirationDate = new Date();
+        expirationDate.setFullYear(expirationDate.getFullYear() + 1);
 
         Pump.i18nData.language = lng;
         Pump.i18nData.resource = Pump.i18n.getResourceBundle(lng);
+
+        document.cookie = "language=" + lng + "; expires=" + expirationDate + "; path=/";
     };
 
     Pump.detectorI18n = function() {
@@ -183,17 +187,17 @@ if (!window.Pump) {
             },
 
             getAvailable: function(code) {
-                var available = this.i18nOptions.available || this.i18nOptions.whitelist;
+                var available = this.i18nOptions.available;
 
-                if (!available || !available.length) {
+                if (!available || _.isEmpty(available)) {
                     return code;
                 }
 
                 var shortCode = this.services.languageUtils.getLanguagePartFromCode(code);
 
-                if (available.indexOf(code) > -1) {
+                if (available[code]) {
                     return code;
-                } else if (available.indexOf(shortCode) > -1) {
+                } else if (available[shortCode]) {
                     return shortCode;
                 }
             },

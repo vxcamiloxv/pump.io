@@ -3,11 +3,11 @@
   a.brand(href="/")= config.site
 
   .btn-group
-    button.btn.btn-small.primary#post-note-button(type="button", title="#{t(Post a note)}")
+    button.btn.btn-small.primary#post-note-button(type="button", title="#{t('Post a note')}")
       span.hidden-phone= t("Note") 
       i.fa.fa-pencil
     if config.canUpload
-      button.btn.btn-small.primary#post-picture-button(type="button", title="#{t(Post a picture)}")
+      button.btn.btn-small.primary#post-picture-button(type="button", title="#{t('Post a picture')}")
         span.hidden-phone= t("Picture") 
         i.fa.fa-picture-o
 

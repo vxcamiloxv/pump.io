@@ -4,26 +4,36 @@
 
     fieldset
 
-      legend Account
+      legend= t("Account")
       
       .clearfix
-        label Username
+        label= t("Username")
         .input
           span.uneditable-input= principalUser.nickname
-          span.help-block The name you log in with (unchangeable!)
+          span.help-block= t("The name you log in with (unchangeable!)")
 
       .clearfix
-        label Password
+        label= t("Language")
+        .input
+          select.span6#language(name="language")
+            if !principalUser.language
+              option(value="")= t("Select a language")
+            each val, lang in i18nData.available
+              option(value=lang, selected=(principalUser.language === lang ? true : false))= val[0]
+          span.help-block= t("For email notifications and interfaz in your language")
+
+      .clearfix
+        label= t("Password")
         .input
           input.span6#password(name="password", size="30", type="password")
-          span.help-block Eight characters, mixed letters and numbers, not stupid
+          span.help-block= t("Eight characters, mixed letters and numbers, not stupid")
 
       .clearfix
-        label Repeat
+        label= t("Repeat")
         .input
           input.span6#repeat(name="repeat", size="30", type="password")
-          span.help-block Check your typing
+          span.help-block= t("Check your typing")
 
     fieldset
       .actions
-        input.btn.btn-primary(type="submit", value="Save changes")
+        input.btn.btn-primary(type="submit", value="#{t('Save changes')}")

@@ -316,6 +316,7 @@
 
             main.principalUser = (Pump.principalUser) ? Pump.principalUser.toJSON() : null;
             main.principal = (Pump.principal) ? Pump.principal.toJSON() : null;
+            main.i18nData = Pump.i18nData || {};
             main.t = function(key, opts) {
                 return Pump.i18n.t(key, opts);
             };
@@ -778,6 +779,10 @@
                     if (Pump.config.sockjs) {
                         // Request a new challenge
                         Pump.setupSocket();
+                    }
+                    if (data.language) {
+                        // Set user language
+                        Pump.i18n.changeLanguage(data.language);
                     }
                     // XXX: reload current data
                     view.stopSpin();
@@ -2446,7 +2451,37 @@
         templateName: "account",
         modelName: "user",
         events: {
-            "submit #account": "saveAccount"
+            "submit #account": "saveAccount",
+            "change #language": "saveLanguage"
+        },
+        saveLanguage: function(event) {
+            var view = this,
+                user = Pump.principalUser,
+                language = view.$("#language").val();
+
+            event.preventDefault();
+
+            if (language && language.length) {
+
+                view.startSpin();
+
+                user.save("language", language, {
+                    success: function(resp, status, xhr) {
+                        view.showSuccess("Language saved.");
+                        view.stopSpin();
+
+                        Pump.i18n.changeLanguage(language, function(err) {
+                            if (err) {
+                                view.showError(err);
+                            }
+                        });
+                    },
+                    error: function(model, error, options) {
+                        view.showError(error.message);
+                        view.stopSpin();
+                    }
+                });
+            }
         },
         saveAccount: function() {
             var view = this,
