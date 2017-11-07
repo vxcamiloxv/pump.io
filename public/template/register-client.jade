@@ -1,33 +1,33 @@
 #registerpage
   form#registration.form-horizontal(method="post", action="/main/javascript-disabled")
-    legend Register for a new account
+    legend #{t('Register for a new account')}
     p.text-error#error
     .control-group#nickname-group
-      label.control-label(for="nickname") Nickname
+      label.control-label(for="nickname") #{t('Nickname')}
       .controls
-        input#nickname(type="text", name="nickname", size="16", placeholder="Pick a good one; you can't change it later")
-        span.help-inline 1-64 characters, only letters and numbers and . and - and _
+        input#nickname(type="text", name="nickname", size="16", placeholder="#{t('Pick a good one; you can\'t change it later')}")
+        span.help-inline #{t('1-64 characters, only letters, numbers and . and - and &lowbar;')}
     if config.requireEmail
       .control-group#nickname-group
-        label.control-label(for="nickname") Email
+        label.control-label(for="nickname") #{t('Email')}
         .controls
-          input#email(type="text", name="email", size="16", placeholder="Your email address")
-          span.help-inline For updates and password recovery
+          input#email(type="text", name="email", size="16", placeholder="#{t('Your email address')}")
+          span.help-inline #{t('For updates and password recovery')}
 
     .control-group#password-group
-      label.control-label(for="password") Password
+      label.control-label(for="password") #{t('Password')}
       .controls
-        input#password(type="password", name="password", size="16", placeholder="And a password")
-        span.help-inline Eight characters, mixed letters and numbers, not stupid
+        input#password(type="password", name="password", size="16", placeholder="#{t('And a password')}")
+        span.help-inline #{t('Eight characters, mixed letters and numbers, not stupid')}
     .control-group#repeat-group
-      label.control-label(for="repeat") Repeat
+      label.control-label(for="repeat") #{t('Repeat')}
       .controls
-        input#repeat(type="password", name="repeat", size="16", placeholder="Make sure you got it right")
+        input#repeat(type="password", name="repeat", size="16", placeholder="#{t('Make sure you got it right')}")
     .control-group
       .controls
-        button.btn.btn-primary(type="submit") Register
+        button.btn.btn-primary(type="submit") #{t('Register')}
 
   p
-    a(href="/main/login") Already have an account?
+    a(href="/main/login") #{t('Already have an account?')}
   p
-    a(href="/main/remote") Account on another server?
+    a(href="/main/remote") #{t('Account on another server?')}

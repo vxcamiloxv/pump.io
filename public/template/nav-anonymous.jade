@@ -9,6 +9,6 @@
     ul.nav.pull-right
       unless config.disableRegistration
         li
-          a#register(href="/main/register")= t("Register")
+          a#register(href="/main/register") #{t('Register')}
       li
-        a#login(href="/main/login")= t("Login")
+        a#login(href="/main/login") #{t('Login')}

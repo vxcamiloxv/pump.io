@@ -56,7 +56,9 @@ if (!window.Pump) {
             whitelist: i18nData.whitelist || [],
             available: i18nData.available || {},
             nonExplicitWhitelist: true,
-            saveMissing: false
+            saveMissing: false,
+            nsSeparator: ":::",
+            keySeparator: "::"
         }, function(err, t) {
             if (err) {
                 Pump.debug(err);

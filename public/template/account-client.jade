@@ -4,20 +4,20 @@
 
     fieldset
 
-      legend= t("Account")
+      legend #{t('Account')}
       
       .clearfix
-        label= t("Username")
+        label #{t('Username')}
         .input
           span.uneditable-input= principalUser.nickname
-          span.help-block= t("The name you log in with (unchangeable!)")
+          span.help-block #{t('The name you log in with (unchangeable!)')}
 
       .clearfix
-        label= t("Language")
+        label #{t('Language')}
         .input
           select.span6#language(name="language")
             if !principalUser.language
-              option(value="")= t("Select a language")
+              option(value="") #{t('Select a language')}
             each val, lang in i18nData.available
               - var countryCode = ""
               if val.countryCode
@@ -26,19 +26,19 @@
                 option(value=lang, selected=true)= val.native + countryCode
               else
                 option(value=lang)= val.name + countryCode
-          span.help-block= t("For email notifications and interfaz in your language")
+          span.help-block #{t('For email notifications and interfaz in your language')}
 
       .clearfix
-        label= t("Password")
+        label #{t('Password')}
         .input
           input.span6#password(name="password", size="30", type="password")
-          span.help-block= t("Eight characters, mixed letters and numbers, not stupid")
+          span.help-block #{t('Eight characters, mixed letters and numbers, not stupid')}
 
       .clearfix
-        label= t("Repeat")
+        label #{t('Repeat')}
         .input
           input.span6#repeat(name="repeat", size="30", type="password")
-          span.help-block= t("Check your typing")
+          span.help-block #{t('Check your typing')}
 
     fieldset
       .actions

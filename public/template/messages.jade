@@ -12,7 +12,7 @@
           small!= activity.content
     if messages.items.length === 0
       li
-        small You do not have any messages yet
+        small #{t('You do not have any messages yet')}
     li.divider
     li
-      a(tabindex="-1", href="/main/messages") All messages
+      a(tabindex="-1", href="/main/messages") #{t('All messages')}

@@ -2,9 +2,9 @@
   .row
     - var headless = false;
     .span9
-      h1 Messages
+      h1 #{t('Messages')}
       include ./major-stream.jade
 
     .span3#sidebar
-      h3 Notifications
+      h3 #{t('Notifications')}
       include ./minor-stream.jade
