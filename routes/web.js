@@ -188,11 +188,19 @@ var handleLogout = function(req, res, next) {
             clearPrincipal(req.session, this);
         },
         function(err) {
+            if (err) throw err;
+            if (!req.session) {
+                return this(null);
+            }
+            req.session.destroy(this);
+        },
+        function(err) {
             if (err) {
                 next(err);
             } else {
                 req.principalUser = null;
                 req.principal = null;
+                res.clearCookie("connect.sid");
                 res.json("OK");
             }
         }
@@ -902,10 +910,11 @@ var showRecoverSent = function(req, res, next) {
 
 var handleRecover = function(req, res, next) {
 
-    var user = null,
-        recovery,
+    var i18n = req.i18n,
         nickname = req.body.nickname,
-        force = req.body.force;
+        force = req.body.force,
+        user = null,
+        recovery;
 
     Step(
         function() {
@@ -986,7 +995,7 @@ var handleRecover = function(req, res, next) {
             if (err) throw err;
             req.log.debug({nickname: nickname}, "Sending recovery email.");
             Mailer.sendEmail({to: user.email,
-                              subject: "Recover password for " + req.app.config.site,
+                              subject: i18n.t("Recover password for {{site}}", {site: req.app.config.site}),
                               text: text,
                               attachment: {data: html,
                                            type: "text/html",

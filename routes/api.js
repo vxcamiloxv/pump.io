@@ -612,8 +612,9 @@ var thisService = function(app) {
 
 var createUser = function(req, res, next) {
 
-    var user,
-        props = req.body,
+    var props = req.body,
+        i18n = req.i18n,
+        user,
         email,
         registrationActivity = function(user, svc, callback) {
             var act = new Activity({
@@ -683,7 +684,7 @@ var createUser = function(req, res, next) {
                 function(err, html, text) {
                     if (err) throw err;
                     Mailer.sendEmail({to: email,
-                                      subject: "Confirm your email address for " + req.app.config.site,
+                                      subject: i18n.t("Confirm your email address for {{site}}", {site: req.app.config.site}),
                                       text: text,
                                       attachment: {data: html,
                                                    type: "text/html",

@@ -15,5 +15,6 @@
   "Account": "Cuenta",
   "Confirm your email address for {{site}}": "Confirma tu dirección de correo electrónico para {{site}}",
   "No notifications yet!": "Sin notificaciones... ¡todavía!",
-  "Recover password for {{site}}": "Recuperar contraseña para {{site}}"
+  "Recover password for {{site}}": "Recuperar contraseña para {{site}}",
+  "Activity notification": "Notificación de actividad"
 }
