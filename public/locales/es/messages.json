@@ -8,7 +8,7 @@
   "Try it": "Intentalo",
 
   "brought to you by": "traído a ti por",
-  "available under the Apache License 2.0": "disponible bajo Apache License 2.0",
+  "available under the Apache License 2.0": "disponible bajo Licencia Apache 2.0.",
   "JavaScript license information": "Información de licencia de JavaScript",
 
   "Register": "Registro",
@@ -39,21 +39,21 @@
   "For updates and password recovery": "Para actualizaciones y recuperación de contraseña",
   "And a password": "Y una contraseña",
   "Eight characters, mixed letters and numbers, not stupid": "Ocho caracteres, letras y números mezclados, algo seguro",
-  "Repeat": "Repetela",
+  "Repeat": "Repitela",
   "Make sure you got it right": "Asegúrate que este bien",
   "Already have an account?": "¿Ya tienes una cuenta?",
 
   "The name you log in with (unchangeable!)": "El nombre con el que inicias sesión (¡no modificable!)",
   "Language": "Idioma",
   "Select a language": "Selecciona un lenguage",
-  "For email notifications and interfaz in your language": "Para notificaciones de correo electrónico e interfaz en su idioma",
+  "For email notifications and interfaz in your language": "Para notificaciones de correo electrónico e interfaz en tu idioma",
   "Check your typing": "Verifica lo escrito",
   "Save changes": "Guardar cambios",
 
   "Note": "Nota",
-  "Post a note": "Post a note",
+  "Post a note": "Publica una nota",
   "Picture": "Imagen",
-  "Post a picture": "Post a picture",
+  "Post a picture": "Publica una imagen",
 
   "Messages": "Mensages",
   "Notifications": "Notificaciones",
