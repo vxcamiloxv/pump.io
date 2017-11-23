@@ -852,7 +852,7 @@
                     var objs;
                     if (Pump.config.requireEmail) {
                         Pump.body.setContent({contentView: Pump.ConfirmEmailInstructionsContent,
-                                              title: "Confirm email"});
+                                              title: Pump.i18n.t("Confirm email")});
                         return;
                     }
                     Pump.setNickname(data.nickname);
