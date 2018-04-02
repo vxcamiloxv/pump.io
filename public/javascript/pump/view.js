@@ -2456,7 +2456,27 @@
         templateName: "account",
         modelName: "user",
         events: {
+            "submit #delete": "deleteAccount",
             "submit #account": "saveAccount"
+        },
+        deleteAccount: function() {
+            var view = this,
+                user = Pump.principalUser;
+
+            view.startSpin();
+
+            user.destroy({
+                success: function(resp, status, xhr) {
+                    view.showSuccess("Delete.");
+                    view.stopSpin();
+                },
+                error: function(model, error, options) {
+                    view.showError(error.message);
+                    view.stopSpin();
+                }
+            });
+
+            return false;
         },
         saveAccount: function() {
             var view = this,

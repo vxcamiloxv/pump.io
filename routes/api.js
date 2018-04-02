@@ -481,7 +481,21 @@ var delUser = function(req, res, next) {
     var user = req.user;
 
     Step(
+
+        // For each person you're following, stop following them.
+        // For each group you're in, leave the group.
+        // For each object that you've created or posted, and haven't deleted, delete that object.
+        // For each thing you've favorited, unfavorite it.
+        // For each object that you've shared, unshare it.
+        // For each list you have, remove all the members of the list, and delete the list.
+        // Remove the user from the list of users on the site.
         function() {
+            console.log("following");
+            user.followingStream(this);
+        },
+        function(err, data) {
+            console.log(err);
+            console.log(data);
             user.del(this);
         },
         function(err) {
@@ -490,7 +504,8 @@ var delUser = function(req, res, next) {
         },
         function(err, str) {
             if (err) throw err;
-            str.remove(user.nickname, this);
+            //str.remove(user.nickname, this);
+            this();
         },
         function(err) {
             if (err) {
